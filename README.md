@@ -2,6 +2,8 @@
 
 A simple web app for studying and revising the Kabyle language (North Africa), built with React, Vite, TypeScript, and Tailwind CSS.
 
+🔗 **Live site**: [kabyle-learner on GitHub Pages](https://your-username.github.io/kabyle-learner/)
+
 ---
 
 ## 🚀 Features
@@ -9,10 +11,13 @@ A simple web app for studying and revising the Kabyle language (North Africa), b
 - 📚 Browse lessons with vocabulary and example phrases
 - ✅ Take interactive quizzes with feedback and score tracking
 - ⏱ Timer-based questions
-- 🔁 Retry quizzes
-- 🎨 Clean UI using Tailwind CSS
+- 🔁 Retry quizzes with new random questions
+- ⛔ Stop quiz anytime
+- 🔊 Sound effects for correct and wrong answers
+- 🎨 Clean UI using Tailwind CSS with Amazigh theme colors
 - 📱 Mobile-friendly layout
 - 🧭 Routing with React Router
+- 🚫 404 page for unmatched routes
 
 ---
 
@@ -55,6 +60,7 @@ The app will be available at: `http://localhost:5173/`
 
 ```
 src/
+├── assets/           # Static assets (e.g. sound effects)
 ├── components/       # (optional shared components)
 ├── data/             # Static lesson data (vocab + examples)
 │   └── lessons.ts
@@ -62,11 +68,31 @@ src/
 │   ├── Home.tsx
 │   ├── Lessons.tsx
 │   ├── LessonDetail.tsx
-│   └── QuizPage.tsx
+│   ├── Quiz.tsx
+│   └── NotFound.tsx
 ├── App.tsx
 ├── main.tsx
-└── index.css         # Tailwind CSS entry
+└── index.css         # Tailwind CSS + color definitions
 ```
+
+---
+
+## 🎨 Custom Styling
+
+Tailwind theme colors were extended via CSS variables in `index.css`:
+
+```css
+@import "tailwindcss";
+
+@theme {
+  --color-amazigh-blue: #0091db;
+  --color-amazigh-green: #79bf1a;
+  --color-amazigh-yellow: #ffd700;
+  --color-amazigh-red: #d0004b;
+}
+```
+
+Then used in Tailwind classes like `bg-amazigh-blue`, `text-amazigh-green`, etc.
 
 ---
 
