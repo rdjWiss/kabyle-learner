@@ -55,6 +55,9 @@ export default function QuizPage() {
 		return <p>Lesson not found or empty.</p>
 	}
 
+	const correctAudio = new Audio(`${import.meta.env.BASE_URL}sounds/correct.mp3`)
+	const wrongAudio = new Audio(`${import.meta.env.BASE_URL}sounds/wrong.mp3`)
+
 	const handleAnswer = (answer: string | null) => {
 		if (answerLocked) return // ✅ prevent double triggers
 		setAnswerLocked(true)
@@ -65,6 +68,12 @@ export default function QuizPage() {
 		const isCorrect = answer === current.english
 		setSelectedAnswer(answer)
 		if (isCorrect) setScore((s) => s + 1)
+
+		if (answer === null) {
+			wrongAudio.play()
+		} else {
+			isCorrect ? correctAudio.play() : wrongAudio.play()
+		}
 	
 		setTimeout(() => {
 			const next = currentIndex + 1
