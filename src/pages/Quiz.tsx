@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { lessons } from '../data/lessons'
 import { useNavigate } from 'react-router-dom'
 
-const TIMER = 20 // seconds
+const TIMER = 10 // seconds
 
 export default function QuizPage() {
 	const navigate = useNavigate()
@@ -98,65 +98,72 @@ export default function QuizPage() {
 	}
 
   return (
-    <div className="max-w-xl mx-auto mt-10 p-4 bg-white shadow rounded">
-			<button
-				onClick={() => navigate(-1)}
-				className="mb-4 text-sm text-blue-600 hover:underline"
-			>
-				← Back
-			</button>
-      <h2 className="text-2xl font-semibold mb-4 text-center">Quiz: {lesson.title}</h2>
+    <div className="min-h-screen bg-amazigh-blue/10 px-4 py-10">
+      <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-6 border border-amazigh-yellow">
+        <button
+          onClick={() => navigate(-1)}
+          className="text-sm text-amazigh-blue hover:underline mb-4"
+        >
+          ← Back
+        </button>
 
-      {showResult ? (
-        <div className="text-center">
-          <p className="text-lg mb-4">You scored <strong>{score}</strong> out of <strong>{vocab.length}</strong></p>
-          <button
-            onClick={resetQuiz}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-          >
-            Try Again
-          </button>
-        </div>
-      ) : (
-        <div>
-          <div className="flex justify-between items-center mb-2">
-            <p className="text-gray-600">Question {currentIndex + 1} / {vocab.length}</p>
-            <p className="text-red-500 font-mono">
-							{timer > 0 ? `⏱ ${timer}s` : '⏱ Time’s up!'}
-						</p>
+        <h2 className="text-2xl font-bold mb-4 text-center text-amazigh-red">Quiz: {lesson.title}</h2>
+
+        {showResult ? (
+          <div className="text-center">
+            <p className="text-lg mb-4 text-amazigh-green">
+              You scored <strong>{score}</strong> out of <strong>{vocab.length}</strong>
+            </p>
+            <button
+              onClick={resetQuiz}
+              className="bg-amazigh-blue text-white px-6 py-2 rounded hover:bg-amazigh-green transition"
+            >
+              Try Again
+            </button>
           </div>
+        ) : (
+          <>
+            <div className="flex justify-between items-center mb-4">
+              <p className="text-gray-600 font-medium">
+                Question {currentIndex + 1} / {vocab.length}
+              </p>
+              <p className="text-amazigh-red font-mono text-sm">
+                {timer > 0 ? `⏱ ${timer}s` : '⏱ Time’s up!'}
+              </p>
+            </div>
 
-          <p className="text-lg mb-4">
-            What does <span className="font-bold">"{currentItem?.kabyle ?? ''}"</span> mean?
-          </p>
+            <p className="text-lg mb-4 font-semibold text-center">
+              What does <span className="text-amazigh-blue">"{currentItem?.kabyle}"</span> mean?
+            </p>
 
-          <div className="grid grid-cols-1 gap-4">
-            {options.map((opt, idx) => {
-              const isCorrect = opt === currentItem?.english
-              const isSelected = selectedAnswer === opt
-              let bg = "bg-gray-100"
+            <div className="grid grid-cols-1 gap-4">
+              {options.map((opt, idx) => {
+                const isCorrect = opt === currentItem?.english
+                const isSelected = selectedAnswer === opt
+                let bg = 'bg-gray-100'
 
-              if (selectedAnswer) {
-                if (isCorrect) bg = "bg-green-200"
-                else if (isSelected) bg = "bg-red-200"
-              }
+                if (selectedAnswer) {
+                  if (isCorrect) bg = 'bg-amazigh-green/50'
+                  else if (isSelected) bg = 'bg-amazigh-red/50'
+                }
 
-              return (
-                <button
-                  key={idx}
-                  disabled={!!selectedAnswer}
-                  onClick={() => handleAnswer(opt)}
-                  className={`${bg} border px-4 py-2 rounded text-left hover:bg-gray-200 transition disabled:opacity-70`}
-                >
-                  {opt}
-                  {selectedAnswer !== null && isCorrect && " ✅"}
-									{selectedAnswer !== null && isSelected && !isCorrect && " ❌"}
-                </button>
-              )
-            })}
-          </div>
-        </div>
-      )}
+                return (
+                  <button
+                    key={idx}
+                    disabled={!!selectedAnswer}
+                    onClick={() => handleAnswer(opt)}
+                    className={`${bg} border px-4 py-2 rounded text-left hover:bg-gray-200 transition disabled:opacity-70`}
+                  >
+                    {opt}
+                    {selectedAnswer !== null && isCorrect && ' ✅'}
+                    {selectedAnswer !== null && isSelected && !isCorrect && ' ❌'}
+                  </button>
+                )
+              })}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   )
 }

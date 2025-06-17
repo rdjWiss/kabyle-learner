@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+@theme {
+  --color-amazigh-blue: #0091db;
+	--color-amazigh-green: #79bf1a;
+	--color-amazigh-yellow: #ffd700;
+	--color-amazigh-red: #d0004b;
+}
+
+#root {
+  padding: 0 !important;
+  margin: 0;
+}
