@@ -9,7 +9,7 @@ export default function QuizPage() {
 	const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   const lesson = lessons.find(l => l.id === id)
-	const vocab = lesson?.vocab ?? []
+	const [quizVocab, setQuizVocab] = useState(() => generateQuizVocab())
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [score, setScore] = useState(0)
@@ -19,7 +19,7 @@ export default function QuizPage() {
 	const [answerLocked, setAnswerLocked] = useState(false)
 
 	useEffect(() => {
-		if (selectedAnswer !== null || showResult || currentIndex >= vocab.length || answerLocked) return
+		if (selectedAnswer !== null || showResult || currentIndex >= quizVocab.length || answerLocked) return
 	
 		const interval = setInterval(() => {
 			setTimer((prev) => {
@@ -35,13 +35,13 @@ export default function QuizPage() {
 		return () => clearInterval(interval)
 	}, [selectedAnswer, currentIndex, showResult, answerLocked])
 
-  const currentItem = vocab[currentIndex]
+  const currentItem = quizVocab[currentIndex]
 
   const options = useMemo(() => {
 		if (!currentItem) return []
 
     const correct = currentItem.english
-    const wrong = vocab
+    const wrong = quizVocab
       .map(v => v.english)
       .filter(e => e !== correct)
       .sort(() => 0.5 - Math.random())
@@ -49,10 +49,15 @@ export default function QuizPage() {
 
     const all = [...wrong, correct].sort(() => 0.5 - Math.random())
     return all
-  }, [currentItem?.english, vocab])
+  }, [currentItem?.english, quizVocab])
 
-	if (!lesson || vocab.length === 0) {
+	if (!lesson || quizVocab.length === 0) {
 		return <p>Lesson not found or empty.</p>
+	}
+
+	function generateQuizVocab() {
+		if (!lesson?.vocab) return []
+		return [...lesson.vocab].sort(() => 0.5 - Math.random()).slice(0, 10)
 	}
 
 	const correctAudio = new Audio(`${import.meta.env.BASE_URL}sounds/correct.mp3`)
@@ -62,7 +67,7 @@ export default function QuizPage() {
 		if (answerLocked) return // ✅ prevent double triggers
 		setAnswerLocked(true)
 	
-		const current = vocab[currentIndex]
+		const current = quizVocab[currentIndex]
 		if (!current) return
 	
 		const isCorrect = answer === current.english
@@ -77,7 +82,7 @@ export default function QuizPage() {
 	
 		setTimeout(() => {
 			const next = currentIndex + 1
-			if (next < vocab.length) {
+			if (next < quizVocab.length) {
 				setCurrentIndex(next)
 				setSelectedAnswer(null)
 				setTimer(TIMER)
@@ -89,6 +94,7 @@ export default function QuizPage() {
 	}
 
   const resetQuiz = () => {
+		setQuizVocab(generateQuizVocab())
 		setCurrentIndex(0)
 		setScore(0)
 		setSelectedAnswer(null)
@@ -100,19 +106,27 @@ export default function QuizPage() {
   return (
     <div className="min-h-screen bg-amazigh-blue/10 px-4 py-10">
       <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-6 border border-amazigh-yellow">
-        <button
-          onClick={() => navigate(-1)}
-          className="text-sm text-amazigh-blue hover:underline mb-4"
-        >
-          ← Back
-        </button>
+        
+				{!showResult ?  (
+					<button
+						onClick={() => navigate('/lessons')}
+						className="text-sm text-red-600 hover:underline mb-4 ml-4"
+					>
+						⏹ Stop Quiz
+					</button>
+				) : <button
+				onClick={() => navigate(-1)}
+				className="text-sm text-amazigh-blue hover:underline mb-4"
+			>
+				← Back
+			</button>}
 
         <h2 className="text-2xl font-bold mb-4 text-center text-amazigh-red">Quiz: {lesson.title}</h2>
 
         {showResult ? (
           <div className="text-center">
             <p className="text-lg mb-4 text-amazigh-green">
-              You scored <strong>{score}</strong> out of <strong>{vocab.length}</strong>
+              You scored <strong>{score}</strong> out of <strong>{quizVocab.length}</strong>
             </p>
             <button
               onClick={resetQuiz}
@@ -125,7 +139,7 @@ export default function QuizPage() {
           <>
             <div className="flex justify-between items-center mb-4">
               <p className="text-gray-600 font-medium">
-                Question {currentIndex + 1} / {vocab.length}
+                Question {currentIndex + 1} / {quizVocab.length}
               </p>
               <p className="text-amazigh-red font-mono text-sm">
                 {timer > 0 ? `⏱ ${timer}s` : '⏱ Time’s up!'}
