@@ -1,8 +1,9 @@
 {
-  "name": "kabyle-web",
+  "name": "kabyle-learner",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+	"homepage": "https://rdjWiss.github.io/kabyle-learner",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
