@@ -111,6 +111,7 @@ export default function QuizPage() {
 					<button
 						onClick={() => navigate(-1)}
 						className="text-sm text-red-600 hover:underline mb-4 ml-4"
+						data-cy="stop-quiz"
 					>
 						⏹ Stop Quiz
 					</button>
@@ -131,6 +132,7 @@ export default function QuizPage() {
 						<button
 							onClick={resetQuiz}
 							className="bg-amazigh-blue text-white px-6 py-2 rounded hover:bg-amazigh-green transition"
+							data-cy="try-again"
 						>
 							Try Again
 						</button>
@@ -167,6 +169,7 @@ export default function QuizPage() {
 										disabled={!!selectedAnswer}
 										onClick={() => handleAnswer(opt)}
 										className={`${bg} border px-4 py-2 rounded text-left hover:bg-gray-200 transition disabled:opacity-70`}
+										data-cy="quiz-option"
 									>
 										{opt}
 										{selectedAnswer !== null && isCorrect && ' ✅'}
