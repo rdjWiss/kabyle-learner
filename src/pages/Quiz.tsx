@@ -57,7 +57,14 @@ export default function QuizPage() {
 
 	function generateQuizVocab() {
 		if (!lesson?.vocab) return []
-		return [...lesson.vocab].sort(() => 0.5 - Math.random()).slice(0, 10)
+
+		// Deduplicate by English translation
+		const uniqueByEnglish = Array.from(
+			new Map(lesson.vocab.map(item => [item.english, item])).values()
+		)
+
+		// Shuffle and take first 10
+		return uniqueByEnglish.sort(() => 0.5 - Math.random()).slice(0, 10)
 	}
 
 	const correctAudio = new Audio(`${import.meta.env.BASE_URL}sounds/correct.mp3`)
