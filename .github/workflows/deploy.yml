@@ -27,8 +27,7 @@ jobs:
 
       - name: Run Cypress Component Tests
         run: |
-          npx cypress install
-          npx cypress run-ct --component
+          npx cypress run --component
 
       - name: Build site
         run: npm run build
