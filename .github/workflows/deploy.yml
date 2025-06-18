@@ -6,11 +6,8 @@ on:
       - master
 
 jobs:
-  deploy:
+  Test:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
 
     steps:
       - name: Checkout Code
@@ -28,6 +25,26 @@ jobs:
       - name: Run Cypress Component Tests
         run: |
           npx cypress run --component
+
+  Deploy:
+    runs-on: ubuntu-latest
+    needs: test  # waits for test job to complete successfully
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
 
       - name: Build site
         run: npm run build
