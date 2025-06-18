@@ -28,6 +28,12 @@ export const lessons: Lesson[] = [
 			{ kabyle: "Aseggas ameggaz", english: "Happy new year" },
 			{ kabyle: "Ttxilek", english: "Please" },
 		],
-		examples: ["Azul fell-awen! - Hello to all of you!"]
+		examples: [
+			"Azul fell-awen! - Hello to all of you!",
+			"Sbaḥ-lxir fell-awen!",
+			"Mselxir a baba",
+			"Iḍ ameggaz, tirga yelhan",
+			"Lɛeslama-nwen ar dagi",
+		]
 	}
 ]
