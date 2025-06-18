@@ -18,6 +18,8 @@ A simple web app for studying and revising the Kabyle language (North Africa), b
 - 📱 Mobile-friendly layout
 - 🧭 Routing with React Router
 - 🚫 404 page for unmatched routes
+- 🧪 Cypress component tests
+- ⚙️ GitHub Actions CI/CD pipeline
 
 ---
 
@@ -28,6 +30,8 @@ A simple web app for studying and revising the Kabyle language (North Africa), b
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS v4](https://tailwindcss.com/)
 - [React Router DOM](https://reactrouter.com/)
+- [Cypress](https://www.cypress.io/) for component testing
+- [GitHub Actions](https://github.com/features/actions) for CI/CD
 
 ---
 
@@ -53,6 +57,40 @@ npm run dev
 ```
 
 The app will be available at: `http://localhost:5173/`
+
+---
+
+## 🧪 Running Tests
+
+### Run Cypress Component Tests
+
+```bash
+npx cypress open --component
+```
+
+You can also run tests headlessly:
+
+```bash
+npx cypress run --component
+```
+
+Test files live in:
+
+```
+cypress/component/**/*.cy.tsx
+```
+
+---
+
+## 🔄 CI/CD Workflow
+
+This project uses **GitHub Actions** to:
+
+- Run Cypress component tests
+- Build the app with Vite
+- Deploy to **GitHub Pages** when pushing to `master`
+
+Workflow file: `.github/workflows/deploy.yaml`
 
 ---
 
